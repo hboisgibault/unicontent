@@ -1,17 +1,18 @@
 from setuptools import setup
 
 setup(name='unicontent',
-      version='0.1',
+      version='0.1.1',
       description='Python module to extract structured metadata from URL, DOI or ISBN',
       keywords='metadata extraction OpenGraph DublinCore isbn GoogleBooks doi',
-      url='http://github.com/hboisgibault/python-metadata-extractor',
+      url='http://github.com/hboisgibault/unicontent',
       author='hboisgibault',
+      author_email='h.boisgibault@gmail.com',
       license='MIT',
       packages=['unicontent'],
       install_requires=['requests', 'bs4', 'bibtexparser'],
       classifiers=[
           'Development Status :: 4 - Beta',
-          
+
           'Intended Audience :: Developers',
           'Topic :: Software Development :: Build Tools',
 

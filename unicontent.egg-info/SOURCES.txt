@@ -1,0 +1,15 @@
+setup.cfg
+setup.py
+unicontent/__init__.py
+unicontent/extractors.py
+unicontent/libraries.py
+unicontent/paths.py
+unicontent/schemas.py
+unicontent/tests.py
+unicontent/validators.py
+unicontent.egg-info/PKG-INFO
+unicontent.egg-info/SOURCES.txt
+unicontent.egg-info/dependency_links.txt
+unicontent.egg-info/not-zip-safe
+unicontent.egg-info/requires.txt
+unicontent.egg-info/top_level.txt
