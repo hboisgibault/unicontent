@@ -68,4 +68,4 @@ class SchemaFactory:
         elif type == 'googlebooks':
             return GoogleBooks()
         else:
-            return None
+            raise ValueError("Schema not recognized")

@@ -36,7 +36,12 @@ class OpenLibrary(Library):
 
     def get_json(self, isbn):
         data_raw = self.get_page(self.get_url(isbn))
-        return json.loads(data_raw)[self.get_query(isbn)]
+        data_json = json.loads(data_raw)
+        query = self.get_query(isbn)
+        if not data_json or query not in data_json:
+            return False
+        else:
+            return data_json[query]
 
     def get_schema(self):
         factory = SchemaFactory()
@@ -51,7 +56,15 @@ class GoogleBooks(Library):
 
     def get_json(self, isbn):
         data_raw = self.get_page(self.get_url(isbn))
-        return json.loads(data_raw)["items"][0]
+        data_json = json.loads(data_raw)
+        if "totalItems" in data_json:
+            total_items = data_json["totalItems"]
+        else:
+            return False
+        if total_items > 0:
+            return data_json["items"][0]
+        else:
+            return False
 
     def get_schema(self):
         factory = SchemaFactory()
@@ -66,4 +79,4 @@ class LibraryFactory:
         elif type == 'openlibrary':
             return OpenLibrary()
         else:
-            return None
+            raise ValueError("Library not recognized")

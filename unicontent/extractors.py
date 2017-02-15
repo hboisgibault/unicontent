@@ -111,9 +111,6 @@ class ISBNContentExtractor(ContentExtractor):
     library = None
     schema = None
 
-    def __init__(self, isbn, **kwargs):
-        super(ISBNContentExtractor, self).__init__(identifier=isbn, **kwargs)
-
     def fetch_content(self):
         factory = LibraryFactory()
         for library_name in self.library_names:
@@ -124,7 +121,7 @@ class ISBNContentExtractor(ContentExtractor):
             else:
                 self.library = library
                 return data_json
-        return False
+        raise Exception("Volume not found")
 
     def get_property(self, property_name):
         schema = self.library.get_schema()
@@ -144,4 +141,4 @@ class ExtractorFactory:
             return DOIContentExtractor(identifier, property_keys=property_keys, format=format)
         if is_isbn(identifier):
             return ISBNContentExtractor(identifier, property_keys=property_keys, format=format)
-        return False
+        raise ValueError("Extractor not recognized")
