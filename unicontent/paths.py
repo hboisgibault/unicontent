@@ -41,3 +41,24 @@ class JsonPath(Path):
                 else:
                     return False
         return sub_array
+
+
+class ObjectPath(Path):
+    def __init__(self, attribute_name, index=None):
+        self.attribute_name = attribute_name
+        self.index = index
+
+    def find_element(self, object):
+        attribute = getattr(object, self.attribute_name, None)
+        if self.index:
+            if attribute and isinstance(attribute, list):
+                return attribute[self.index]
+        return attribute
+
+
+class PlainTextPath(Path):
+    def __init__(self, text):
+        self.text = text
+
+    def find_element(self, *args):
+        return self.text

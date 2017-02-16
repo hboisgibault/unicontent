@@ -9,7 +9,7 @@ setup(name='unicontent',
       author_email='h.boisgibault@gmail.com',
       license='MIT',
       packages=['unicontent'],
-      install_requires=['requests', 'bs4', 'bibtexparser'],
+      install_requires=['requests', 'bs4', 'bibtexparser', 'wikipedia', 'tldextract', 'isbnlib'],
       classifiers=[
           'Development Status :: 4 - Beta',
 

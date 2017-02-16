@@ -3,8 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 from .schemas import SchemaFactory
 from .libraries import LibraryFactory
-from .validators import is_doi, is_isbn, is_url
+from .validators import is_doi, is_isbn, is_url, has_domain
 import bibtexparser
+import wikipedia
+from wikipedia.exceptions import PageError
 import json
 
 
@@ -58,7 +60,7 @@ class ContentExtractor:
 
 
 class URLContentExtractor(ContentExtractor):
-    schema_names = ['opengraph', 'dublincore', 'htmltags']
+    schema_names = ['opengraph', 'dublincore', 'html']
     schemas = []
 
     def __init__(self, url, schema_names=None, **kwargs):
@@ -87,6 +89,31 @@ class URLContentExtractor(ContentExtractor):
             property_value = path.find_element(self.content)
             if property_value:
                 return property_value
+
+
+class WikipediaContentExtractor(ContentExtractor):
+    schema_name = 'wikipedia'
+    schema = None
+
+    def init_schemas(self):
+        factory = SchemaFactory()
+        self.schema = factory.create_schema(self.schema_name)
+
+    def fetch_content(self):
+        try:
+            wikipage = wikipedia.page(self.identifier)
+            return wikipage
+        except PageError:
+            return False
+
+    def get_property(self, property_name):
+        path = self.schema.get_property_path(property_name)
+        # If path does not exist, try the next schema
+        if not path:
+            return False
+        property_value = path.find_element(self.content)
+        if property_value:
+            return property_value
 
 
 class DOIContentExtractor(ContentExtractor):
@@ -136,7 +163,10 @@ class ExtractorFactory:
     @staticmethod
     def create_extractor(identifier, property_keys=None, format='dict', schema_names=None):
         if is_url(identifier):
-            return URLContentExtractor(identifier, property_keys=property_keys, format=format, schema_names=schema_names)
+            if has_domain(identifier, 'wikipedia.org'):
+                return WikipediaContentExtractor(identifier, property_keys=property_keys, format=format)
+            else:
+                return URLContentExtractor(identifier, property_keys=property_keys, format=format, schema_names=schema_names)
         if is_doi(identifier):
             return DOIContentExtractor(identifier, property_keys=property_keys, format=format)
         if is_isbn(identifier):

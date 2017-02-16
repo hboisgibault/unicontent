@@ -1,5 +1,6 @@
 from urllib import parse
 import re
+import tldextract
 
 
 def is_url(identifier):
@@ -8,6 +9,14 @@ def is_url(identifier):
         return False
     else:
         return True
+
+
+def has_domain(url, domain_name):
+    ext = tldextract.extract(url)
+    if domain_name == ext.registered_domain:
+        return True
+    else:
+        return False
 
 
 def is_isbn(identifier):

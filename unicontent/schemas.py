@@ -1,5 +1,5 @@
 # coding: utf-8
-from .paths import HtmlPath, JsonPath
+from .paths import *
 
 
 class MetadataSchema:
@@ -31,10 +31,19 @@ class DublinCore(MetadataSchema):
 
 class HtmlTags(MetadataSchema):
     title_path = HtmlPath(tag_name='title')
+    url_path = HtmlPath(tag_name='link', attributes={'rel': 'canonical'}, content_name="href")
     description_path = HtmlPath(tag_name='meta', attributes={'name': 'description'}, content_name="content")
     author_name_path = HtmlPath(tag_name='meta', attributes={'name': 'author'}, content_name="content")
     publisher_path = HtmlPath(tag_name='meta', attributes={'name': 'application-name'}, content_name="content")
     language_path = HtmlPath(tag_name='html', content_name="lang")
+
+
+class Wikipedia(MetadataSchema):
+    title_path = ObjectPath('title')
+    url_path = ObjectPath('url')
+    image_url_path = ObjectPath('images', 0)
+    description_path = ObjectPath('description')
+    publisher_path = PlainTextPath('Wikipedia')
 
 
 class OpenLibrary(MetadataSchema):
@@ -67,5 +76,7 @@ class SchemaFactory:
             return OpenLibrary()
         elif type == 'googlebooks':
             return GoogleBooks()
+        elif type == 'wikipedia':
+            return Wikipedia()
         else:
             raise ValueError("Schema not recognized")
