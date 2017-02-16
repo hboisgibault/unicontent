@@ -1,6 +1,7 @@
 from urllib import parse
 import re
 import tldextract
+import isbnlib
 
 
 def is_url(identifier):
@@ -20,11 +21,7 @@ def has_domain(url, domain_name):
 
 
 def is_isbn(identifier):
-    isbn_regex = re.compile("(?:[0-9]{3}-)?[0-9]{1,5}-?[0-9]{1,7}-?[0-9]{1,6}-?[0-9]")
-    if isbn_regex.match(identifier):
-        return True
-    else:
-        return False
+    return isbnlib.notisbn(identifier)
 
 
 def is_doi(identifier):
@@ -33,3 +30,25 @@ def is_doi(identifier):
         return True
     else:
         return False
+
+
+def clean_identifier(identifier):
+    if is_url(identifier):
+        return clean_url(identifier)
+    elif is_doi(identifier):
+        return clean_doi(identifier)
+    elif is_isbn(identifier):
+        return clean_isbn(identifier)
+    else:
+        return False
+
+def clean_isbn(isbn):
+    return isbnlib.to_isbn13(isbn)
+
+
+def clean_url(url):
+    return url
+
+
+def clean_doi(doi):
+    return doi

@@ -39,10 +39,6 @@ class HtmlTags(MetadataSchema):
 
 
 class Wikipedia(MetadataSchema):
-    title_path = ObjectPath('title')
-    url_path = ObjectPath('url')
-    image_url_path = ObjectPath('images', 0)
-    description_path = ObjectPath('description')
     publisher_path = PlainTextPath('Wikipedia')
 
 

@@ -43,16 +43,12 @@ class JsonPath(Path):
         return sub_array
 
 
-class ObjectPath(Path):
-    def __init__(self, attribute_name, index=None):
+class AttributePath(Path):
+    def __init__(self, attribute_name):
         self.attribute_name = attribute_name
-        self.index = index
 
     def find_element(self, object):
         attribute = getattr(object, self.attribute_name, None)
-        if self.index:
-            if attribute and isinstance(attribute, list):
-                return attribute[self.index]
         return attribute
 
 

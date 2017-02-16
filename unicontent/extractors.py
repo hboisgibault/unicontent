@@ -8,6 +8,8 @@ import bibtexparser
 import wikipedia
 from wikipedia.exceptions import PageError
 import json
+import re
+from urllib.parse import urlparse, unquote, quote
 
 
 def get_metadata(identifier, format='dict', property_keys=None, schema_names=None):
@@ -91,29 +93,8 @@ class URLContentExtractor(ContentExtractor):
                 return property_value
 
 
-class WikipediaContentExtractor(ContentExtractor):
-    schema_name = 'wikipedia'
-    schema = None
-
-    def init_schemas(self):
-        factory = SchemaFactory()
-        self.schema = factory.create_schema(self.schema_name)
-
-    def fetch_content(self):
-        try:
-            wikipage = wikipedia.page(self.identifier)
-            return wikipage
-        except PageError:
-            return False
-
-    def get_property(self, property_name):
-        path = self.schema.get_property_path(property_name)
-        # If path does not exist, try the next schema
-        if not path:
-            return False
-        property_value = path.find_element(self.content)
-        if property_value:
-            return property_value
+class WikipediaContentExtractor(URLContentExtractor):
+    schema_names = ['opengraph', 'html', 'wikipedia']
 
 
 class DOIContentExtractor(ContentExtractor):
@@ -154,7 +135,7 @@ class ISBNContentExtractor(ContentExtractor):
         schema = self.library.get_schema()
         path = schema.get_property_path(property_name)
         if not path:
-            return False
+            return None
         property_value = path.find_element(self.content)
         return property_value
 
