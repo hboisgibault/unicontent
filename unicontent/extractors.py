@@ -8,8 +8,6 @@ import bibtexparser
 import wikipedia
 from wikipedia.exceptions import PageError
 import json
-import re
-from urllib.parse import urlparse, unquote, quote
 
 
 def get_metadata(identifier, format='dict', property_keys=None, schema_names=None):
@@ -42,7 +40,8 @@ class ContentExtractor:
     def get_data_dict(self):
         data_dict = {}
         for property_key in self.property_keys:
-            data_dict[property_key] = self.get_property(property_key)
+            property_value = self.get_property(property_key)
+            data_dict[property_key] = property_value
         return data_dict
 
     def get_data_json(self):
@@ -55,6 +54,8 @@ class ContentExtractor:
     @staticmethod
     def get_page(url, headers=None, params=None):
         response = requests.get(url, headers=headers, params=params)
+        if response.encoding != 'UTF-8':
+            response.encoding = 'UTF-8'
         return response.text
 
     def get_property(self, property_name):

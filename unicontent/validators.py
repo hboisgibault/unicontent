@@ -42,6 +42,7 @@ def clean_identifier(identifier):
     else:
         return False
 
+
 def clean_isbn(isbn):
     return isbnlib.to_isbn13(isbn)
 

@@ -22,8 +22,9 @@ class HtmlPath(Path):
             return False
         if not self.content_name:
             return element.text
-        else:
-            return element[self.content_name]
+        if self.content_name not in element:
+            return False
+        return element[self.content_name]
 
 
 class JsonPath(Path):
