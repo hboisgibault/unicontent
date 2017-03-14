@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='unicontent',
-      version='0.4',
+      version='0.5',
       description='Python module to extract structured metadata from URL, DOI or ISBN',
       keywords='metadata extraction OpenGraph DublinCore isbn GoogleBooks doi',
       url='http://github.com/hboisgibault/unicontent',

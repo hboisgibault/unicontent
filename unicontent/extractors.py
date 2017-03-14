@@ -92,6 +92,7 @@ class URLContentExtractor(ContentExtractor):
             property_value = path.find_element(self.content)
             if property_value:
                 return property_value
+        return None
 
 
 class WikipediaContentExtractor(URLContentExtractor):

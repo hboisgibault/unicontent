@@ -18,11 +18,12 @@ class HtmlPath(Path):
 
     def find_element(self, soup):
         element = soup.find(self.tag_name, attrs=self.attributes)
+        print(element)
         if not element:
             return False
         if not self.content_name:
             return element.text
-        if self.content_name not in element:
+        if not element.has_attr(self.content_name):
             return False
         return element[self.content_name]
 
