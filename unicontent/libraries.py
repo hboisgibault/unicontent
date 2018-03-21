@@ -1,6 +1,6 @@
 import json
 import requests
-from .schemas import SchemaFactory
+from schemas import SchemaFactory
 
 
 class Library:
