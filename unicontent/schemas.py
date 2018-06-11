@@ -1,8 +1,11 @@
 # coding: utf-8
-from .paths import *
+from paths import *
 
 
 class MetadataSchema:
+    def get_data(self):
+        pass
+
     def get_property_path(self, property_name):
         property_path_name = property_name + "_path"
         path = getattr(self, property_path_name, None)
@@ -17,6 +20,9 @@ class OpenGraph(MetadataSchema):
     image_url_path = HtmlPath(tag_name="meta", attributes={"property": "og:image"}, content_name="content")
     language_path = HtmlPath(tag_name="meta", attributes={"property": "og:locale"}, content_name="content")
     type_path = HtmlPath(tag_name="meta", attributes={"property": "og:type"}, content_name="content")
+
+    def get_data(self):
+        pass
 
 
 class DublinCore(MetadataSchema):

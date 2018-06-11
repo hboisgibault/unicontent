@@ -3,36 +3,19 @@ Unicontent is a Python library to extract metadata from different types of sourc
 goal is to normalize metadata and to provide an easy-to-use extractor. Given an identifier (URL, DOI, ISBN), unicontent can retrieve
 structured data about the corresponding object.
 
-
-Here's a list of the metadata information extracted if available :
-* Title -> ```title``` : Title of the object (title of the webpage, book or other type of object)
-* URL -> ```url``` : URL to access the object
-* Description -> ```description``` : Description of the object
-* Image URL -> ```image_url``` : URL of the object's image
-* Author name -> ```author_name``` : Author or creator of the object's name
-* Date published -> ```date_published``` : Date of publication or creation
-* Publisher -> ```publisher``` : Name of the source or publisher
-* Language -> ```language``` : Language of the content
-
-## Installation
-
-* Clone the repository : ```git clone https://github.com/hboisgibault/unicontent.git```
-* Install with pip : ```pip install unicontent```
-
 ## Usage
 
 Here is the basic usage if you want to extract metadata with any kind of identifier. unicontent will detect the type of identifier and use the right extractor. Use get_metadata function if you just want metadata.
 
 ```python
 from unicontent.extractors import get_metadata
-data = get_metadata(identifier="http://example.com")
+data = get_metadata(identifier="http://example.com", format='n3')
 ```
 See below if you want to use the extractor for a specific kind of identifier (URL, DOI or ISBN).
 
 ### Extraction from URL
 
-The class ```URLContentExtractor``` is used to extract data from an URL. Several schemas can be used : OpenGraph, DublinCore or HtmlTags.
-For each property key (title, author_name etc.), the extractor will try to get the property value based on the first schema. If the property is not defined in the schema, or not available for the object, the extractor will try the next schema.
+The class ```URLContentExtractor``` is used to extract data from an URL. Several formats are available : RDF formats will return a rdflib graph (n3, turtle, xml). 'dict' and 'json' format will return a dictionary and a JSON file according to the mapping defined. A default mapping is provided.
 
 ```python
 url = 'http://www.lemonde.fr/big-browser/article/2017/02/13/comment-les-americains-s-informent-oublient-et-reagissent-sur-les-reseaux-sociaux_5079137_4832693.html'
