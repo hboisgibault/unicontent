@@ -87,7 +87,7 @@ class ContentExtractor:
 class URLContentExtractor(ContentExtractor):
     schema_names = ['opengraph', 'dublincore', 'html']
     schemas = []
-
+    headers = {'User-Agent':'Mozilla/5.0'}
     def __init__(self, url, schema_names=None, **kwargs):
         super(URLContentExtractor, self).__init__(identifier=url, **kwargs)
         if schema_names:
@@ -102,7 +102,7 @@ class URLContentExtractor(ContentExtractor):
                 self.schemas.append(schema)
 
     def fetch_content(self):
-        html = self.get_page(self.identifier)
+        html = self.get_page(self.identifier, headers=self.headers)
         return BeautifulSoup(html, "lxml")
 
     def build_metadata(self):
